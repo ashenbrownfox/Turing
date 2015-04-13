@@ -8,6 +8,9 @@ namespace Turing
 {
     public class TuringMachine
     {
-        Console.WriteLine("Hello Turing Machine!");
+        public TuringMachine()
+        {
+
+        }
     }
 }

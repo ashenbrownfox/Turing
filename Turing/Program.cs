@@ -10,6 +10,7 @@ namespace Turing
     {
         public static void Main(string[] args)
         {
+            Console.WriteLine("That's better!");
         }
     }
 }
