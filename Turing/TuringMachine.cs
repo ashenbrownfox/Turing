@@ -10,7 +10,7 @@ namespace Turing
     {
         /* Fields */
         private List<Transition> transitions_delta;
-        private List<string> Accepting_States;
+        private List<string> Halting_States;
         private List<char> Alphabet;
         string Starting_State;
         private List<C> tape;
@@ -28,7 +28,7 @@ namespace Turing
         {
             Alphabet = new List<char>();
             transitions_delta = new List<Transition>();
-            Accepting_States = new List<string>();
+            Halting_States = new List<string>();
             halted = true;
         }
 

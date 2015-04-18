@@ -77,7 +77,9 @@ namespace Turing
                         line_buffer = sr.ReadLine();
                         arraybuffer = line_buffer.Split(' ');
                         char[] char_buffer = arraybuffer[1].ToCharArray();
-                        start_array[i] = arraybuffer[0]; letter_array[i] = char_buffer[0]; next_array[i] = arraybuffer[2];
+                        start_array[i] = arraybuffer[0]; 
+                        letter_array[i] = char_buffer[0];
+                        next_array[i] = arraybuffer[2];
                     }
                     //String transition_state = "new Transition(\"q0\", '0', \"q0\")";
                     #endregion
@@ -110,7 +112,6 @@ namespace Turing
                     Console.WriteLine("Please enter the name of the input file(default is input.txt):");
                     string path = ".//..//..//..//";
                     Console.WriteLine("Please type the name of the input file.");
-
                     FileStream fs_in = new FileStream(path + "input.txt", FileMode.OpenOrCreate, FileAccess.Read);
                     StreamReader streamreader = new StreamReader(fs_in);
                     string[] input_buff = new string[1000];
