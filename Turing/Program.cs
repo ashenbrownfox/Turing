@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.IO;
 
@@ -10,9 +11,28 @@ namespace Turing
     public class Program
     {
         public static UserUtility UI = new UserUtility();
+        public static void testReg()
+        {
+            string[] testing = { "abc", "aabbcc", "aaabbbccc", "abbc", "aabbc", "aabbbccc", "bbaacc" };
+            Regex reg = new Regex("^(?<n>(?<o>a))*(?<-n>b)*(?<-o>c)*(?(n)(?!))(?(o)(?!))$");
+            Match match;
+            foreach (string teststring in testing)
+            {
+                match = reg.Match(teststring);
+                if (match.Success)
+                {
+                    Console.WriteLine("ACCEPTED!");
+                    Console.WriteLine(match.Value);
+                }
+                else
+                {
+                    Console.WriteLine("REJECTED!");
+                }
+            }
+        }
         public static void Main(string[] args)
         {
-            Console.WriteLine("That's better!");
+            testReg();
             //specify a number to reject when there is an infinte loop
             Console.WriteLine("Hello World!");
             String[] options = { "1) Load Turing Machine", "2) Read Input Strings", "3) Exit", "4) Exit" };
@@ -20,7 +40,7 @@ namespace Turing
             string line_buffer;
  
             string[] arraybuffer = new string[1000];
-            TuringMachine<string, string> ture = new TuringMachine<string, string>(); 
+            TuringMachine<string, char> ture = new TuringMachine<string, char>(); 
             while (repeat)
             {
                 Console.WriteLine("Please select an option.");
@@ -33,7 +53,6 @@ namespace Turing
                     /*************** reads and processes the DFSM formet file ****************/
                     #region
                     string path = ".//..//..//..//";
-                    string Start_State = "";
                     int num_states = 0, num_alphabet = 0, num_accepting_states = 0, num_transitions = 0;
                     arraybuffer = new string[1000];
                     Console.WriteLine("Please type the name of the states file(default is state.txt):");
@@ -54,56 +73,57 @@ namespace Turing
                     }
                     catch (Exception ex)
                     {
-                        UI.FailMessage("Error, incorrect state input file.");
+                        UI.FailMessage("Error, incorrect numbers.");
                     }
+                    //string[,] Finite_State_Array = new string[num_states, num_alphabet];
+                    string Start_State = sr.ReadLine();
+                    
+                    line_buffer = sr.ReadLine();
+                    string[] States_Array = line_buffer.Split(',');
 
-                    string[] Accepting_States = new string[num_accepting_states];
-                    string[,] Finite_State_Array = new string[num_states, num_alphabet];
-                    char[] Alphabet_Array = new char[num_alphabet];
-                    Start_State = sr.ReadLine();
                     line_buffer = sr.ReadLine();
+                    char[] Alphabet_Array = line_buffer.ToCharArray();
 
-                    string[] States_Array = line_buffer.Split(' ');
                     line_buffer = sr.ReadLine();
-                    Alphabet_Array = line_buffer.ToCharArray();
-                    line_buffer = sr.ReadLine();
-                    Accepting_States = line_buffer.Split(' ');
-                    //string start, letter, next;
+                    string[] Accepting_States = line_buffer.Split(',');
+
                     string[] start_array = new string[num_transitions];
-                    char[] letter_array = new char[num_transitions];
+                    char[] read_array = new char[num_transitions];
+                    char[] write_array = new char[num_transitions];
+                    char[] direction_array = new char[num_transitions];
                     string[] next_array = new string[num_transitions];
                     for (int i = 0; i < num_transitions; i++)
                     {
                         line_buffer = sr.ReadLine();
                         arraybuffer = line_buffer.Split(' ');
                         char[] char_buffer = arraybuffer[1].ToCharArray();
-                        start_array[i] = arraybuffer[0]; 
-                        letter_array[i] = char_buffer[0];
+                        start_array[i] = arraybuffer[0];
+                        read_array[i] = char_buffer[0];
+                        write_array[i] = char_buffer[1];
+                        direction_array[i] = char_buffer[2];
                         next_array[i] = arraybuffer[2];
                     }
-                    //String transition_state = "new Transition(\"q0\", '0', \"q0\")";
+   
                     #endregion
                     List<String> Q_States; List<char> Alpha; List<Transition> Trans_Delta;
-                    //States_Array
-                    Q_States = new List<string> { }; //states
-                    Alpha = new List<char> { }; //alphabets
-                    Trans_Delta = new List<Transition> { };
-                    //After Processing, Stores the Data in 3 Lists
+                    Q_States = new List<string>(); 
+                    Alpha = new List<char>(); 
+                    Trans_Delta = new List<Transition>();
                     for (int i = 0; i < num_states; i++)
                     {
                         Q_States.Add(States_Array[i]);
                     }
-                    for (int i = 0; i < num_alphabet; i++)
+                    for (int i = 0; i < Alphabet_Array.Length; i++)
                     {
                         Alpha.Add(Alphabet_Array[i]);
                     }
                     for (int i = 0; i < num_transitions; i++)
                     {
-                        // Trans_Delta.Add(new Transition(start_array[i], letter_array[i], next_array[i]));
+                        Trans_Delta.Add(new Transition(start_array[i],read_array[i], write_array[i],direction_array[i], next_array[i]));
                     }
 
                     //FSM dFSM = new FSM(Q_States, Alpha, Trans_Delta, Start_State, Accepting_States);
-                    ture.PopulateMachine(Alphabet_Array);
+                    ture.PopulateMachine(Alpha, Q_States,Trans_Delta, Start_State, Accepting_States);
                     Console.WriteLine("Ok, state machine processed.");
                 }
                 else if (line_buffer.StartsWith("2"))

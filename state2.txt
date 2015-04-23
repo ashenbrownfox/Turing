@@ -1,0 +1,22 @@
+8
+1
+15
+q0
+q0,q1,q2,q3,q4,q5,q6,q7
+01b
+q7
+q0 bbL q1
+q1 0bL q2
+q1 1bL q4
+q1 bbR q7
+q2 00L q2
+q2 11L q2
+q2 bbR q3
+q3 0bR q6
+q4 00L q4
+q4 11L q4
+q4 bbR q5
+q5 1bR q6
+q6 00R q6
+q6 11R q6
+q6 bbL q1

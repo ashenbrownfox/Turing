@@ -1,13 +1,28 @@
+8
 2
-1
-6
+21
 q0
-q0 q1 q2 qh
-ab
-qh
-q0 baL q1
-q1 abL q2
-q1 baL q1
-q2 aaL q0
-q2 bbR q0
-q0 aaR qh
+q0,q1,q2,q3,q4,q5,q6,q7
+abcxyz
+q6,q7
+q0 axR q1
+q0 yyL q4
+q0 ##S q6
+q1 aaR q1
+q1 yyR q1
+q1 byR q2
+q2 zzR q2
+q2 bbR q2
+q2 czL q3
+q3 aaL q3
+q3 bbL q3
+q3 zzL q3
+q3 yyL q3
+q3 xxR q0
+q4 xxL q4
+q4 ##R q5
+q5 xxR q5
+q5 yyR q5
+q5 zzR q5
+q5 ### q6
+q6 ### q7
