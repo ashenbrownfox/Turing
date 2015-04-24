@@ -110,6 +110,14 @@ namespace Turing
             //sb.Append();
             return sb.ToString();
         }
+        public bool isMirrorLikeString(string content)
+        {
+            for (int i = 0; i < (int)(content.Length / 2); i++)
+            {
+                if (content[i] != content[content.Length - 1 - i]) return false;
+            }
+            return true;
+        }
         public void Check(String input)
         {
             string currentState = Starting_State;
@@ -171,6 +179,81 @@ namespace Turing
                 Console.WriteLine("ACCEPTED!");
             }
             Console.WriteLine("ACCEPTED", input);
+            //mytape.DisplayTape();
+        }
+
+        public void CheckInputStrin(string input)
+        {
+            string currentState = Starting_State;
+            TapeList<string> mytape = new TapeList<string>();
+            Transition transition = new Transition("qt", 'a', 'b', 'R', "qrs");
+            mytape.InitializeTape(input);
+            Console.WriteLine("Checking {0}:", input);
+            bool in_state = isMirrorLikeString(input);
+            foreach (char letter in input.ToCharArray())
+            {
+                transition = Transitions.Find(t => t.Start == currentState &&
+                                                t.Read == letter);
+                List<Transition> bunchtransition = Transitions.FindAll(t => t.Start == currentState && t.Read == letter);
+                if (transition == null) { }
+                else
+                {
+                    char direction = transition.LeftOrRight;
+                    char towrite = transition.Write; int position;
+                    if (direction == 'L') { position = mytape.MoveLeft(); }
+                    else if (direction == 'R') { position = mytape.MoveRight(); }
+                    else { position = mytape.StandStill(); }
+                    mytape.WriteTape(position, 'c');
+                }
+                //Console.WriteLine("Checking {0}...  ",input);
+                if (isHalting())
+                {
+                    if (isAcceptingState(input))
+                    {
+                        //Console.Write("REJECTED \n");
+                    }
+                }
+
+                string tempt = "ty54rt";
+                try { tempt = transition.Start; }
+                catch (Exception e) { }
+                if (Accepting_States.Contains(tempt))
+                {
+                    //Console.Write("ACCEPTED!\n",input);
+                    return;
+                }
+                if (!Alphabet.Contains(letter))
+                {
+                    //Console.Write("REJECTED\n",input);
+                    //mytape.DisplayTape();
+                    //return;
+                }
+
+            }
+
+            string now = "e";
+            try
+            {
+                now = transition.Start;
+            }
+            catch (Exception e)
+            {
+                //Console.WriteLine("Contains no valid trans");
+            }
+            //Console.WriteLine(now);
+            if (Accepting_States.Contains(now))
+            {
+                //Console.WriteLine("ACCEPTED!");
+            }
+            //Console.WriteLine("ACCEPTED",input);
+            if(in_state)
+            {
+                Console.Write("ACCEPTED!\n");
+            }
+            else
+            {
+                Console.Write("REJECTED!\n");
+            }
             //mytape.DisplayTape();
         }
 

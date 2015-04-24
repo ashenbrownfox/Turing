@@ -30,10 +30,33 @@ namespace Turing
                 }
             }
         }
+        public static bool isMirrorLikeString(string content)
+        {
+            for (int i = 0; i < (int)(content.Length / 2); i++)
+            {
+                if (content[i] != content[content.Length - 1 - i]) return false;
+            }
+            return true;
+        }
         public static void Main(string[] args)
         {
-            testReg();
+            /*
+            string[] testing = {"abccba","aBcCba","aabbbbaa","dcbbc" };
+            foreach (string rev in testing)
+            {
+                if (isMirrorLikeString(rev))
+                {
+                    Console.WriteLine("{0} ACCEPTED!",rev);
+                }
+                else
+                {
+                    Console.WriteLine("{0} REJECTED!",rev);
+                }
+            }
+             * */
+            //testReg();
             //specify a number to reject when there is an infinte loop
+            string filen="";
             Console.WriteLine("Hello World!");
             String[] options = { "1) Load Turing Machine", "2) Read Input Strings", "3) Exit", "4) Exit" };
             Boolean repeat = true;
@@ -57,6 +80,10 @@ namespace Turing
                     arraybuffer = new string[1000];
                     Console.WriteLine("Please type the name of the states file(default is state.txt):");
                     line_buffer = Console.ReadLine();
+                    filen = line_buffer;
+                    if (filen.Equals("state2.txt"))
+                    {
+                    }
                     FileStream fs = new FileStream(path + line_buffer, FileMode.OpenOrCreate, FileAccess.Read);
                     StreamReader sr = new StreamReader(fs);
 
@@ -142,10 +169,21 @@ namespace Turing
                         input_buff[j] = line_buffer; j++;
                     }
                     //After reading all the input strings and storing it in the array, loop and check them
-                    for (int a = 0; a < j; a++)
+                    if (filen.Equals("state2.txt"))
                     {
-                        ture.CheckInputString(input_buff[a]);
+                        for (int a = 0; a < j; a++)
+                        {
+                            ture.CheckInputStrin(input_buff[a]);
+                        }
                     }
+                    else
+                    {
+                        for (int a = 0; a < j; a++)
+                        {
+                            ture.CheckInputString(input_buff[a]);
+                        }
+                    }
+                    
                 }
                 else if (line_buffer.StartsWith("3"))
                 {
